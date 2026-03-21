@@ -1,0 +1,121 @@
+# dockhand-mcp
+
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that exposes the [Dockhand](https://dockhand.pro) Docker management REST API as tools for LLMs such as Claude.
+
+## Features
+
+- Manage **containers** — list, inspect, create, start, stop, restart, remove, get logs
+- - Manage **compose stacks** — list, create, start, stop, restart, remove
+  - - Manage **Git stacks** — list, create, deploy
+    - - Manage **images** — list, pull, push, remove, vulnerability scan
+      - - Manage **volumes** — list, create, remove
+        - - Manage **networks** — list, create, remove
+          - - **Bulk operations** — batch start/stop/restart/remove across containers, images, volumes, networks, or stacks
+            - - **Activity log** and **schedules** — inspect events and scheduled tasks
+              - - All long-running operations return synchronous JSON results (no job-polling needed)
+               
+                - ## Requirements
+               
+                - - Python 3.11+
+                  - - A running [Dockhand](https://dockhand.pro) instance
+                    - - `mcp >= 1.0.0`
+                      - - `httpx >= 0.27.0`
+                       
+                        - ## Installation
+                       
+                        - ```bash
+                          pip install dockhand-mcp
+                          ```
+
+                          Or from source:
+
+                          ```bash
+                          git clone https://github.com/markhaines/dockhand-mcp
+                          cd dockhand-mcp
+                          pip install -e .
+                          ```
+
+                          ## Configuration
+
+                          Set the following environment variables before running the server:
+
+                          | Variable | Default | Description |
+                          |---|---|---|
+                          | `DOCKHAND_URL` | `http://localhost:3000` | Base URL of your Dockhand instance |
+                          | `DOCKHAND_COOKIE` | _(empty)_ | Session cookie for authenticated instances (e.g. `connect.sid=s%3A...`) |
+
+                          To get your session cookie when authentication is enabled, log in to Dockhand in your browser and copy the `connect.sid` cookie value from DevTools → Application → Cookies.
+
+                          ## Usage
+
+                          ### Standalone
+
+                          ```bash
+                          export DOCKHAND_URL=http://localhost:3000
+                          export DOCKHAND_COOKIE="connect.sid=s%3A..."   # only if auth is enabled
+                          python -m dockhand_mcp.server
+                          ```
+
+                          ### Claude Desktop
+
+                          Add this to your `claude_desktop_config.json`:
+
+                          ```json
+                          {
+                            "mcpServers": {
+                              "dockhand": {
+                                "command": "dockhand-mcp",
+                                "env": {
+                                  "DOCKHAND_URL": "http://localhost:3000",
+                                  "DOCKHAND_COOKIE": ""
+                                }
+                              }
+                            }
+                          }
+                          ```
+
+                          ## Available Tools
+
+                          | Category | Tool | Description |
+                          |---|---|---|
+                          | Environments | `list_environments` | List all configured Docker environments |
+                          | Environments | `get_dashboard_stats` | Get CPU/memory/container stats |
+                          | Containers | `list_containers` | List all containers |
+                          | Containers | `get_container` | Inspect a container |
+                          | Containers | `create_container` | Create a new container |
+                          | Containers | `start_container` | Start a stopped container |
+                          | Containers | `stop_container` | Stop a running container |
+                          | Containers | `restart_container` | Restart a container |
+                          | Containers | `remove_container` | Delete a container |
+                          | Containers | `get_container_logs` | Fetch container logs |
+                          | Bulk | `batch_operation` | Bulk start/stop/restart/remove |
+                          | Stacks | `list_stacks` | List compose stacks |
+                          | Stacks | `create_stack` | Create and deploy a stack |
+                          | Stacks | `start_stack` | Start a stack |
+                          | Stacks | `stop_stack` | Stop a stack |
+                          | Stacks | `restart_stack` | Restart a stack |
+                          | Stacks | `remove_stack` | Remove a stack |
+                          | Git Stacks | `list_git_stacks` | List Git-backed stacks |
+                          | Git Stacks | `create_git_stack` | Create a Git-backed stack |
+                          | Git Stacks | `deploy_git_stack` | Deploy a Git stack |
+                          | Images | `list_images` | List images |
+                          | Images | `pull_image` | Pull an image |
+                          | Images | `push_image` | Push an image |
+                          | Images | `remove_image` | Remove an image |
+                          | Images | `scan_image` | Vulnerability scan |
+                          | Volumes | `list_volumes` | List volumes |
+                          | Volumes | `create_volume` | Create a volume |
+                          | Volumes | `remove_volume` | Remove a volume |
+                          | Networks | `list_networks` | List networks |
+                          | Networks | `create_network` | Create a network |
+                          | Networks | `remove_network` | Remove a network |
+                          | Activity | `get_activity` | Get container event log |
+                          | Schedules | `list_schedules` | List scheduled tasks |
+
+                          ## Multi-environment support
+
+                          Every tool accepts an optional `env` parameter (integer environment ID). Omit it to use the default environment, or pass the ID from `list_environments` to target a specific remote host.
+
+                          ## License
+
+                          MIT

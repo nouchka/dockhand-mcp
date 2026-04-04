@@ -2,6 +2,8 @@
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that exposes the [Dockhand](https://dockhand.pro) Docker management REST API as tools for LLMs such as Claude.
 
+Runs as a Docker-hosted SSE server — deploy it once, connect any MCP client over HTTP.
+
 ## Features
 
 - Manage **containers**: list, inspect, create, start, stop, restart, remove, get logs
@@ -16,45 +18,42 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that e
 
 ## Requirements
 
-- Python 3.11+
+- Docker + Docker Compose
 - A running [Dockhand](https://dockhand.pro) instance
-- `mcp >= 1.0.0`
-- `httpx >= 0.27.0`
 
-## Installation
+## Deployment
+
+### Remote server (recommended)
+
+Copy `docker-compose.yml` to any machine with Docker and run:
 
 ```bash
-pip install dockhand-mcp
+DOCKHAND_URL=http://your-dockhand-host:3001 \
+DOCKHAND_COOKIE="connect.sid=s%3A..." \
+docker compose up -d
 ```
 
-Or from source:
+Docker builds the image directly from GitHub — no source code needed on the remote machine.
+
+### Local
 
 ```bash
 git clone https://github.com/markhaines/dockhand-mcp
 cd dockhand-mcp
-pip install -e .
+DOCKHAND_URL=http://localhost:3000 docker compose up -d
 ```
 
 ## Configuration
-
-Set the following environment variables before running the server:
 
 | Variable | Default | Description |
 |---|---|---|
 | `DOCKHAND_URL` | `http://localhost:3000` | Base URL of your Dockhand instance |
 | `DOCKHAND_COOKIE` | _(empty)_ | Session cookie for authenticated instances (e.g. `connect.sid=s%3A...`) |
+| `PORT` | `8000` | Port the MCP server listens on |
 
 To get your session cookie when authentication is enabled, log in to Dockhand in your browser and copy the `connect.sid` cookie value from DevTools > Application > Cookies.
 
-## Usage
-
-### Standalone
-
-```bash
-export DOCKHAND_URL=http://localhost:3000
-export DOCKHAND_COOKIE="connect.sid=s%3A..."   # only if auth is enabled
-python -m dockhand_mcp.server
-```
+## Connecting to Claude
 
 ### Claude Desktop
 
@@ -64,14 +63,16 @@ Add this to your `claude_desktop_config.json`:
 {
   "mcpServers": {
     "dockhand": {
-      "command": "dockhand-mcp",
-      "env": {
-        "DOCKHAND_URL": "http://localhost:3000",
-        "DOCKHAND_COOKIE": ""
-      }
+      "url": "http://your-server:8000/sse"
     }
   }
 }
+```
+
+### Claude Code
+
+```bash
+claude mcp add --transport sse dockhand http://your-server:8000/sse
 ```
 
 ## Available Tools

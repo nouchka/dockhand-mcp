@@ -1,0 +1,11 @@
+services:
+  dockhand-mcp:
+    build:
+      context: https://github.com/markhaines/dockhand-mcp.git
+    ports:
+      - "8000:8000"
+    environment:
+      - DOCKHAND_URL=${DOCKHAND_URL:-http://localhost:3000}
+      - DOCKHAND_COOKIE=${DOCKHAND_COOKIE:-}
+      - PORT=8000
+    restart: unless-stopped

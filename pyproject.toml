@@ -1,6 +1,6 @@
 [project]
 name = "dockhand-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for the Dockhand Docker management API"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -8,16 +8,18 @@ license = { text = "MIT" }
 keywords = ["mcp", "docker", "dockhand", "llm"]
 dependencies = [
     "mcp>=1.0.0",
-        "httpx>=0.27.0",
-        ]
+    "httpx>=0.27.0",
+    "uvicorn>=0.30.0",
+    "starlette>=0.40.0",
+]
 
-        [project.scripts]
-        dockhand-mcp = "dockhand_mcp.server:main"
+[project.scripts]
+dockhand-mcp = "dockhand_mcp.server:main"
 
-        [project.urls]
-        Homepage = "https://github.com/markhaines/dockhand-mcp"
-        Repository = "https://github.com/markhaines/dockhand-mcp"
+[project.urls]
+Homepage = "https://github.com/markhaines/dockhand-mcp"
+Repository = "https://github.com/markhaines/dockhand-mcp"
 
-        [build-system]
-        requires = ["hatchling"]
-        build-backend = "hatchling.build"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

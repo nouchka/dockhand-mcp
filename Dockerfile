@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY pyproject.toml .
 COPY dockhand_mcp/ ./dockhand_mcp/
+COPY README.md .
 
 RUN pip install --no-cache-dir -e .
 

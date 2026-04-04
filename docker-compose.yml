@@ -1,7 +1,6 @@
 services:
   dockhand-mcp:
-    build:
-      context: https://github.com/markhaines/dockhand-mcp.git
+    image: ghcr.io/markhaines/dockhand-mcp:latest
     ports:
       - "8000:8000"
     environment:

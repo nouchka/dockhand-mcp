@@ -23,6 +23,8 @@ Runs as a Docker-hosted SSE server — deploy it once, connect any MCP client ov
 
 ## Deployment
 
+The image is published automatically to `ghcr.io/markhaines/dockhand-mcp:latest` on every push to main.
+
 ### Remote server (recommended)
 
 Copy `docker-compose.yml` to any machine with Docker and run:
@@ -33,7 +35,7 @@ DOCKHAND_COOKIE="connect.sid=s%3A..." \
 docker compose up -d
 ```
 
-Docker builds the image directly from GitHub — no source code needed on the remote machine.
+No build step — Docker pulls the pre-built image from the registry.
 
 ### Local
 

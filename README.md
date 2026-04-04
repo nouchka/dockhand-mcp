@@ -52,6 +52,7 @@ DOCKHAND_URL=http://localhost:3000 docker compose up -d
 | `DOCKHAND_URL` | `http://localhost:3000` | Base URL of your Dockhand instance |
 | `DOCKHAND_COOKIE` | _(empty)_ | Session cookie for authenticated instances (e.g. `connect.sid=s%3A...`) |
 | `PORT` | `8000` | Port the MCP server listens on |
+| `ROOT_PATH` | _(empty)_ | Public path prefix when serving behind a reverse proxy sub-path (e.g. `/dockhand`) |
 
 To get your session cookie when authentication is enabled, log in to Dockhand in your browser and copy the `connect.sid` cookie value from DevTools > Application > Cookies.
 

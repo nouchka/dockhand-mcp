@@ -20,6 +20,7 @@ from starlette.routing import Mount, Route
 DOCKHAND_URL = os.environ.get("DOCKHAND_URL", "http://localhost:3000")
 DOCKHAND_COOKIE = os.environ.get("DOCKHAND_COOKIE", "")
 PORT = int(os.environ.get("PORT", "8000"))
+ROOT_PATH = os.environ.get("ROOT_PATH", "").rstrip("/")
 
 app = Server("dockhand")
 
@@ -712,7 +713,7 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
 
 # ── SSE transport & Starlette app ──────────────────────────────────────────────
 
-sse = SseServerTransport("/messages/")
+sse = SseServerTransport(f"{ROOT_PATH}/messages/")
 
 
 async def handle_sse(request: Request):

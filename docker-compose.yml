@@ -5,7 +5,7 @@ services:
       - "8000:8000"
     environment:
       - DOCKHAND_URL=${DOCKHAND_URL:-http://localhost:3000}
-      - DOCKHAND_COOKIE=${DOCKHAND_COOKIE:-}
+      - DOCKHAND_TOKEN=${DOCKHAND_TOKEN:-}
       - PORT=8000
       - ROOT_PATH=${ROOT_PATH:-}
     restart: unless-stopped

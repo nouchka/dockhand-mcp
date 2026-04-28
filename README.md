@@ -31,7 +31,7 @@ Copy `docker-compose.yml` to any machine with Docker and run:
 
 ```bash
 DOCKHAND_URL=http://your-dockhand-host:3001 \
-DOCKHAND_COOKIE="connect.sid=s%3A..." \
+DOCKHAND_TOKEN="your-api-token" \
 docker compose up -d
 ```
 
@@ -50,11 +50,11 @@ DOCKHAND_URL=http://localhost:3000 docker compose up -d
 | Variable | Default | Description |
 |---|---|---|
 | `DOCKHAND_URL` | `http://localhost:3000` | Base URL of your Dockhand instance |
-| `DOCKHAND_COOKIE` | _(empty)_ | Session cookie for authenticated instances (e.g. `connect.sid=s%3A...`) |
+| `DOCKHAND_TOKEN` | _(empty)_ | API token for authenticated instances |
 | `PORT` | `8000` | Port the MCP server listens on |
 | `ROOT_PATH` | _(empty)_ | Public path prefix when serving behind a reverse proxy sub-path (e.g. `/dockhand`) |
 
-To get your session cookie when authentication is enabled, log in to Dockhand in your browser and copy the `connect.sid` cookie value from DevTools > Application > Cookies.
+To get your API token, log in to Dockhand, go to **Settings → API Tokens**, and generate a new token.
 
 ## Connecting to Claude
 

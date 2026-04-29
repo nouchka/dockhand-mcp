@@ -6,6 +6,4 @@ services:
     environment:
       - DOCKHAND_URL=${DOCKHAND_URL:-http://localhost:3000}
       - DOCKHAND_TOKEN=${DOCKHAND_TOKEN:-}
-      - PORT=8000
-      - ROOT_PATH=${ROOT_PATH:-}
     restart: unless-stopped
